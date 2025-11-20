@@ -45,12 +45,21 @@ class ReActAgent:
         for step_idx in range(self.config.max_steps):
             # ====== TODO ======
             # 1. At each step, format the prompt based on the make_prompt function and self.trajectory
-            prompt = None
+            # make_prompt expects a trajectory as a list of dicts with keys 'thought','action','observation'
+            traj_dicts = [asdict(s) for s in self.trajectory]
+            prompt = make_prompt(user_query, traj_dicts)
+            if self.config.verbose:
+                print(f"\n--- Step {step_idx+1} Prompt ---\n{prompt.splitlines()[-20:]}\n")
             # ====== TODO ======
 
             # ====== TODO ======
             # 2. Use self.llm to process the prompt
-            out = None
+            try:
+                out = self.llm(prompt)
+            except Exception as e:
+                out = f"Thought: (error)\nAction: finish[answer=\"Tool error calling LLM: {e}\"]"
+            if self.config.verbose:
+                print("LLM output:\n", out)
             # ====== TODO ======
 
             # Expect two lines: Thought:..., Action:...
@@ -62,7 +71,7 @@ class ReActAgent:
 
             # ====== TODO ======
             # 3. Parse the action of the action line using the parse_action function
-            parsed = None
+            parsed = parse_action(action_line)
             # ====== TODO ======
 
             if not parsed:

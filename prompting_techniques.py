@@ -82,21 +82,39 @@ def parse_action(line: str) -> Optional[Tuple[str, Dict[str, Any]]]:
       Action: finish[answer="Vincent van Gogh."]
     Returns (action_name, args_dict) or None on invalid input.
     """
-    # ====== TODO ======
-    #     Use the parse_args function above to write a function that converts an action string to a function call
-    #     Return the name of the function and the args
-    name = None; args = None
+    # Validate prefix
+    if not isinstance(line, str):
+        return None
+    line = line.strip()
+    if not line.lower().startswith("action:"):
+        return None
 
-    # 1) Must start with 'Action:'
-    
-    # 2) Extract action name up to the first '['
-    #    name must be non-empty and composed of letters/underscores (basic check)
-    
-    # 3) Inside brackets: key=value pairs separated by commas (quotes allowed)
-    
-    # 4) Allow trailing whitespace after closing bracket only
-    
-    # ====== TODO ======
+    # Extract the part after 'Action:'
+    rest = line[len("Action:"):].strip()
+
+    # Try to match: name[argstr]
+    m = re.match(r"^([A-Za-z_][A-Za-z0-9_]*)\s*\[(.*)\]$", rest, flags=re.DOTALL)
+    if not m:
+        # Allow a bare action name without brackets: e.g., 'Action: finish'
+        m2 = re.match(r"^([A-Za-z_][A-Za-z0-9_]*)$", rest)
+        if m2:
+            name = m2.group(1)
+            args = {}
+            return name, args
+        return None
+
+    name = m.group(1)
+    argstr = m.group(2).strip()
+
+    # If empty arg string, return empty args
+    if argstr == "":
+        return name, {}
+
+    try:
+        args = split_args(argstr)
+    except Exception:
+        return None
+
     return name, args
 
 
