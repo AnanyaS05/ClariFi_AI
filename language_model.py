@@ -3,7 +3,7 @@ import re, torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig
 
 MODEL_NAME   = "Qwen/Qwen2.5-0.5B-Instruct"    # swap if you prefer another instruct model
-LOAD_8BIT    =  True                       # set True if you installed bitsandbytes and want 8-bit loading
+LOAD_8BIT    =  False                       # set True if you installed bitsandbytes and want 8-bit loading
 DTYPE        = torch.bfloat16 if torch.cuda.is_available() else torch.float32
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
