@@ -1,73 +1,107 @@
-# CS 4100 Course Project: Fall 2025
+# ClariFi AI: Financial Analysis Agent
 
-In this course project, we will design an AI agent system, which uses a language model to understand text queries and perform actions—such as searching databases—to provide answers to queries. We will provide you with an example workflow to build an information retrieval agent, though you are also welcome to explore different topics and build your own agent instead.
+ClariFi AI is an intelligent ReAct (Reasoning + Acting) agent designed to answer complex financial questions by retrieving and analyzing information from a corpus of financial documents. It leverages a local Large Language Model (LLM) to reason through queries, execute search actions, and synthesize final answers based on retrieved evidence.
 
-**Learning objectives**
+## Project Overview
 
-By the end of this project, you will learn the step-by-step workflow of implementing an agent system, including:
+This project implements a complete agentic workflow from scratch, demonstrating the core principles of modern AI systems:
+1.  **Information Retrieval**: A custom TF-IDF search engine to find relevant documents.
+2.  **ReAct Prompting**: A structured prompting technique that interleaves reasoning ("Thought"), action execution ("Action"), and observation ("Observation").
+3.  **Local LLM Integration**: Uses the `Qwen/Qwen2.5-0.5B-Instruct` model via Hugging Face Transformers for autonomous decision-making.
+4.  **Agent Loop**: A control loop that manages the conversation history and tool execution until a final answer is reached.
 
-- A search method that, given an input query, retrieves the most relevant documents from a database.
-- Prompting an open-source language model to generate step-by-step actions given a query; Load and use a language model to produce outputs that follow a defined format.
-- Build an agent system capable of performing database retrieval.
+## Codebase Structure
 
-**Milestones** 
+The project is organized into modular components:
 
-We will implement the agent system using Python, with a set of starter code provided in a [GitHub repository](https://github.com/VirtuosoResearch/CS4100_project), which includes four milestones:
+### 1. `knowledge_base.py`
+*   **Purpose**: Acts as the database and search engine.
+*   **Key Components**:
+    *   `CORPUS`: A collection of financial documents (e.g., Nestle 2024 Report, XYZ Inc. Balance Sheet).
+    *   `compute_tf`, `compute_df`, `tfidf_vector`: Implements the TF-IDF algorithm from first principles.
+    *   `cosine`: Computes similarity between query and document vectors.
+    *   `tool_search`: The tool function exposed to the agent.
 
-- Implementing the search method.
-- Implement the prompting methods.
-- Write code to use language models, including loading the model and writing functions to generate results with the models.
-- Writing a class to combine the functions and implement the workflow of the agent.
+### 2. `prompting_techniques.py`
+*   **Purpose**: Manages the interface between the agent and the LLM.
+*   **Key Components**:
+    *   `parse_action`: Parses the LLM's output (e.g., `Action: search[query="..."]`) into executable function calls.
+    *   `make_prompt`: Constructs the context window, including the system preamble, user question, and the history of thoughts/actions/observations.
 
-You can test each part using [the provided Jupyter notebook](https://github.com/VirtuosoResearch/CS4100_project/blob/main/Course Project Handout.ipynb).
+### 3. `language_model.py`
+*   **Purpose**: Wraps the Hugging Face model for easy inference.
+*   **Key Components**:
+    *   `hf_llm`: The main generation function. It takes a prompt and returns the model's next "Thought" and "Action".
+    *   **Model Loading**: Automatically handles device selection (CPU vs. CUDA) and includes a fallback to `local_files_only` for robust offline/slow-network usage.
+    *   **Streaming**: Uses `TextStreamer` to print the model's output token-by-token for real-time feedback.
 
-**Expected workload**
+### 4. `agent_system.py`
+*   **Purpose**: The brain of the operation.
+*   **Key Components**:
+    *   `ReActAgent`: A class that implements the agent loop.
+    *   `run()`: The main method that orchestrates the cycle:
+        1.  Build Prompt -> 2. Call LLM -> 3. Parse Action -> 4. Execute Tool -> 5. Repeat.
 
-- 1st milestone: ~30 lines of code or ~5 hours of work.
-- 2nd milestone: ~20 lines of code or ~4 hours of work.
-- 3rd milestone: ~30 lines of code or ~6 hours of work.
-- 4th milestone: ~30 lines of code or ~5 hours of work. 
+### 5. `main.py`
+*   **Purpose**: The entry point for the application.
+*   **Functionality**: Initializes the agent and runs a sample query about Nestle's financial performance.
 
-**Project workflow**
+## Prerequisites
 
-We now introduce the workflow. For example, suppose we want to develop an agent system capable of retrieving information from a database to answer user questions.
+*   **Python**: 3.8 or higher.
+*   **Hardware**:
+    *   **CPU**: Sufficient for running the 0.5B model (slow but functional).
+    *   **GPU (Optional)**: NVIDIA GPU with CUDA for faster inference.
 
-- We will first create a small collection of Wikipedia-like documents and then use a search method to find related information to the query. The search method will be based on [**TF-IDF**](https://en.wikipedia.org/wiki/Tf–idf), a technique used in search engines to rank documents according to their relevance to a user’s query. 
-- We will design prompting formats to guide a language model in generating responses and calling the previously defined search method.
-- We will then use a language model from Hugging Face. By applying the loading and generation functions, the model will process the retrieved documents to find answers within the information.
-- We will implement a workflow that enables the agent to iteratively generate search actions using the language model and retrieve new information from the database.
+## Installation
 
-**Expected tools and platforms**
+1.  **Clone the repository** (if applicable) or navigate to the project directory.
 
-We will use Python as the programming language for this project. For data processing, we will work with NumPy and Pandas. To handle text data, we will apply Python’s built-in string operations to process queries and documents. Additionally, we will utilize pretrained language model implementations from the Hugging Face Transformers library.
+2.  **Install Dependencies**:
+    You need the Hugging Face ecosystem and PyTorch.
+    ```bash
+    pip install torch transformers accelerate bitsandbytes
+    ```
+    *Note: `bitsandbytes` is optional but recommended for 8-bit loading if you have a compatible GPU.*
 
-**Next steps**
+## Usage
 
-1. Form a team with two or three classmates.
-2. Make a plan to work on the project, such as setting up a weekly meeting time, a project document / overleaf write-up, etc.
-3. Brainstorm about potential project ideas and make a decision by the end of next Friday, Oct 17.
-4. Make a presentation file to present the overall project idea and share with the rest of the class, and sign up for a presentation slot on Oct 20 or Oct 23!
+To run the agent with the default sample query:
 
-## Python Environment
+```powershell
+python main.py
+```
 
-- [Google Colab](https://colab.research.google.com/). 
-- Local computing ([instructions](https://github.com/VirtuosoResearch/CS4100_project/blob/main/Resources/Set-up-a-Local-Python-Environment.md)) using [Anaconda](https://www.anaconda.com/download).
-- Discover cluster: Discovery is a high-performance computing (HPC) resource for the Northeastern University research community. If you need computation resources for your course project, you can apply for access to the Discovery cluster. We provide the instructions for accessing a Discover cluster [in the document here](https://github.com/VirtuosoResearch/CS4100_project/blob/main/Resources/Accessing-and-Using-Discovery-Clusters.md).
+### What to Expect
+1.  **Initialization**: You will see logs indicating the tokenizer and model are loading. This may take 30-60 seconds on the first run.
+2.  **Thinking Process**: The agent will start printing its "Thoughts" and "Actions" in real-time.
+    *   *Example*: `Thought: I need to find the sales figures... Action: search[query="Nestle sales 2024"]`
+3.  **Observation**: The system will print the search results retrieved from the knowledge base.
+4.  **Final Answer**: The agent will synthesize the information and provide a final answer.
 
-## Examples of AI Agents
+## Configuration
 
-We describe a few examples of modern AI agents. An AI agent is a software system that utilizes language models to automate tasks.
+You can modify `main.py` to ask different questions:
 
-A travel assistant agent helps plan a trip from start to finish by interpreting a traveler’s request, including dates, budget, and interests. Companies like [Mindtrip AI](https://mindtrip.ai/) and [Booked AI](https://www.booked.ai/) have already built such AI-powered travel planners. These agents search for flights and hotels, check basic rules, and suggest itineraries.
+```python
+# In main.py
+query = "What is the financial position of XYZ Inc?"
+agent.run(query)
+```
 
-A software engineering agent helps developers build, debug, and maintain software projects more efficiently. Examples include [GitHub Copilot ](https://github.com/features/copilot)and [Tabnine Coding Assistant](https://www.tabnine.com/). Such an agent assists users in understanding codebases, fixing bugs, and managing development workflows. 
+To change the model or enable 8-bit loading, edit `language_model.py`:
 
-A customer service agent assists users by answering questions and resolving issues quickly and accurately. Examples include [Zendesk AI Assist](https://www.zendesk.com/service/ai/) and [Intercom Fin AI Agent](https://fin.ai/drlp/ai-agent), which automatically handle customer inquiries and escalate complex cases to human staff. Such an agent’s role is to interpret customer messages, locate useful information, and send helpful responses.
+```python
+MODEL_NAME = "Qwen/Qwen2.5-0.5B-Instruct"  # Change to a larger model if you have the hardware
+LOAD_8BIT = True  # Set to True if you have bitsandbytes and a GPU
+```
 
-## Related Papers
+## Troubleshooting
 
-- [Toolformer](https://arxiv.org/abs/2302.04761): Language Models Can Teach Themselves to Use Tools
-- [Retrieval-Augmented Generation](https://arxiv.org/abs/2005.11401): Combining generation with non-parametric memory; useful baseline/variant for your tool-use agent.[ ](https://arxiv.org/abs/2005.11401?utm_source=chatgpt.com)
-- [Self-Consistency](https://arxiv.org/abs/2203.11171) Improves Chain of Thought Reasoning in Language Models 
+*   **"Hanging" during load**: The model download can be slow. The code now includes status prints to keep you informed. If it fails, it attempts to use cached local files.
+*   **Slow Generation**: On a CPU, generating text is slow. The `TextStreamer` is enabled so you can see progress character-by-character.
+*   **`torch_dtype` Warning**: This has been fixed in the latest codebase by using the `dtype` argument.
 
-- [ReAct](https://arxiv.org/abs/2210.03629?utm_source=chatgpt.com): Synergizing Reasoning and Acting in Language Models.
+## License
+This project is for educational purposes as part of CS 4100.
+
