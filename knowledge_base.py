@@ -17,20 +17,37 @@ CORPUS = [
         "id": "doc1",
         "title": "Nestle Financial Statements",
         "text": (
-           """Nestlé is one of the largest food and beverage companies in the world, operating in 185 countries and employing around 277,000 people. The brand portfolio includes many products people buy daily, such as coffee (Nescafé, Nespresso), chocolate (KitKat), bottled water, pet foods like Purina, baby formula, and a wide range of health and nutrition products. Because the company is so widespread and diversified, its financial statements provide a clear picture of how people are buying and consuming food around the world. In 2024, Nestlé reported total sales of about 91.4 billion Swiss francs. This is slightly lower than the previous year, but the company still earned a very strong profit of about 10.9 billion Swiss francs, which means Nestlé remained highly profitable despite sales being a bit softer than the year before.
-
-Even though total sales decreased slightly compared to 2023, Nestlé managed to maintain strong profit margins. This means that even with fewer total purchases, the company controlled its costs effectively and priced its products in a way that protected earnings. Essentially, Nestlé earned about 12 cents of pure profit for every dollar of product it sold, which is a very strong position in the food industry where margins are often much lower. The fact that Nestlé kept profitability high suggests strong brand power — customers continue to pay for its products even when budgets are tight.
-
-When looking at where the money came from geographically, the United States remained Nestlé’s most important market. North America generated over 25 billion Swiss francs in sales, while Europe contributed just under 19 billion. Asia, Oceania, and Africa together produced around 16.8 billion. Latin America added nearly 12 billion, with Brazil and Mexico playing particularly strong roles. Greater China contributed about 5 billion. Some regions, such as Europe and China, saw slower consumer spending because of inflation and economic uncertainty, which helps explain part of the slight drop in overall sales.
-
-By product category, Nestlé’s strongest-performing businesses continue to be coffee and pet food. Coffee brands like Nescafé and Nespresso, as well as Purina pet food products, brought in the largest share of revenue and showed resilience even in weaker consumer environments. Nutrition and health science products, which include vitamins, supplements, and specialized medical nutrition, also contributed significantly. Meanwhile, bottled water, chocolate, and cooking products remain stable but less dominant parts of the business. The performance of Purina in particular shows how much people continue to spend on their pets, even when tightening budgets in other parts of their lives.
-
-In terms of financial structure, Nestlé has far more debt than cash, with around 5.6 billion Swiss francs in cash compared to over 63 billion in debt. However, this is not necessarily a problem. Large companies often use debt strategically to fund expansion, research, acquisitions, and shareholder returns. Nestlé also returned a significant amount of money to its shareholders in 2024, paying out about 7.8 billion Swiss francs in dividends and spending around 4.7 billion on buying back its own shares. Share buybacks reduce the number of shares in circulation, which typically increases the value of each remaining share.
-
-The company did not make any major disposals in 2024, meaning it did not sell off any big divisions or brands. However, it did make strategic acquisitions, including buying Grupo CRM, a premium chocolate company in Brazil, and acquiring global rights to a microbiome-based health treatment from Seres Therapeutics. These purchases show Nestlé’s strategy of investing in growing niches — premium sweets in developing markets and advanced medical nutrition in healthcare markets.
-
-Overall, the story of 2024 for Nestlé is one of stability, discipline, and long-term positioning rather than dramatic expansion. Even though total sales did not grow, the company protected its profitability, strengthened its core product categories, and allocated substantial value back to shareholders. Nestlé remains financially strong, widely diversified, and strategically positioned in both everyday consumer food and the growing health and wellness sector. It continued to demonstrate the power of trusted global brands, efficient operations, and strong pricing influence in the marketplace.
-
+           """Nestlé is one of the largest food and beverage companies in the world, operating in 185 countries and employing around 277,000 people. 
+           The brand portfolio includes many products people buy daily, such as coffee (Nescafé, Nespresso), chocolate (KitKat), bottled water, pet foods 
+           like Purina, baby formula, and a wide range of health and nutrition products. Because the company is so widespread and diversified, its financial 
+           statements provide a clear picture of how people are buying and consuming food around the world. In 2024, Nestlé reported total sales of about 91.4 
+           billion Swiss francs. This is slightly lower than the previous year, but the company still earned a very strong profit of about 10.9 billion Swiss 
+           francs, which means Nestlé remained highly profitable despite sales being a bit softer than the year before. Even though total sales decreased slightly 
+           compared to 2023, Nestlé managed to maintain strong profit margins. This means that even with fewer total purchases, the company controlled its costs 
+           effectively and priced its products in a way that protected earnings. Essentially, Nestlé earned about 12 cents of pure profit for every dollar of 
+           product it sold, which is a very strong position in the food industry where margins are often much lower. The fact that Nestlé kept profitability high 
+           suggests strong brand power — customers continue to pay for its products even when budgets are tight. When looking at where the money came from 
+           geographically, the United States remained Nestlé’s most important market. North America generated over 25 billion Swiss francs in sales, while 
+           Europe contributed just under 19 billion. Asia, Oceania, and Africa together produced around 16.8 billion. Latin America added nearly 12 billion, 
+           with Brazil and Mexico playing particularly strong roles. Greater China contributed about 5 billion. Some regions, such as Europe and China, saw 
+           slower consumer spending because of inflation and economic uncertainty, which helps explain part of the slight drop in overall sales. By product 
+           category, Nestlé’s strongest-performing businesses continue to be coffee and pet food. Coffee brands like Nescafé and Nespresso, as well as Purina 
+           pet food products, brought in the largest share of revenue and showed resilience even in weaker consumer environments. Nutrition and health science 
+           products, which include vitamins, supplements, and specialized medical nutrition, also contributed significantly. Meanwhile, bottled water, chocolate,
+           and cooking products remain stable but less dominant parts of the business. The performance of Purina in particular shows how much people continue to 
+           spend on their pets, even when tightening budgets in other parts of their lives. In terms of financial structure, Nestlé has far more debt than cash, 
+           with around 5.6 billion Swiss francs in cash compared to over 63 billion in debt. However, this is not necessarily a problem. Large companies often 
+           use debt strategically to fund expansion, research, acquisitions, and shareholder returns. Nestlé also returned a significant amount of money to its 
+           shareholders in 2024, paying out about 7.8 billion Swiss francs in dividends and spending around 4.7 billion on buying back its own shares. 
+           Share buybacks reduce the number of shares in circulation, which typically increases the value of each remaining share. The company did not make any 
+           major disposals in 2024, meaning it did not sell off any big divisions or brands. However, it did make strategic acquisitions, including buying Grupo 
+           CRM, a premium chocolate company in Brazil, and acquiring global rights to a microbiome-based health treatment from Seres Therapeutics. 
+           These purchases show Nestlé’s strategy of investing in growing niches — premium sweets in developing markets and advanced medical nutrition in 
+           healthcare markets.Overall, the story of 2024 for Nestlé is one of stability, discipline, and long-term positioning rather than dramatic expansion. 
+           Even though total sales did not grow, the company protected its profitability, strengthened its core product categories, and allocated substantial 
+           value back to shareholders. Nestlé remains financially strong, widely diversified, and strategically positioned in both everyday consumer food and 
+           the growing health and wellness sector. It continued to demonstrate the power of trusted global brands, efficient operations, and strong pricing 
+           influence in the marketplace.
 
 """
         ),
@@ -164,7 +181,6 @@ It allows a lender to decide whether you are a safe and financially responsible 
 """
 ),
     },
-    # A quick play around: Add some extra documents and watch how the GPT model explores, searches, and reasons through more scenarios in the final step.
 ]
 
 # Then, we design a simple search method based on TF-IDF to retrieve information from the corpus.
