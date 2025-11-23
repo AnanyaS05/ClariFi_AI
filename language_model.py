@@ -1,26 +1,41 @@
 # 1. We will load a language model model from huggingface (Qwen 0.5B Instruct)
 import re, torch
-from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig
+from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig, TextStreamer
 
 MODEL_NAME   = "Qwen/Qwen2.5-0.5B-Instruct"    # swap if you prefer another instruct model
 LOAD_8BIT    =  False                       # set True if you installed bitsandbytes and want 8-bit loading
 DTYPE        = torch.bfloat16 if torch.cuda.is_available() else torch.float32
 
-tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
+print(f"Loading tokenizer for {MODEL_NAME}...")
+try:
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True, local_files_only=True)
+except Exception:
+    print("Local load failed, trying online...")
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
 
 # ====== TODO ======
 # Load model with AutoModelForCausalLM.from_pretrained() from huggingface with the above MODEL_NAME, LOAD_8BIT, DTYPE
 # Try to load the model; fall back to None with a friendly warning if loading fails
 model = None
+print(f"Loading model {MODEL_NAME} (this may take a while)...")
 try:
     if LOAD_8BIT:
         # bitsandbytes 8-bit loading (requires bitsandbytes installed)
-        model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, load_in_8bit=True, device_map="auto", trust_remote_code=True)
+        model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, load_in_8bit=True, device_map="auto", trust_remote_code=True, local_files_only=True)
     else:
-        model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, torch_dtype=DTYPE, trust_remote_code=True)
+        try:
+            model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, dtype=DTYPE, trust_remote_code=True, local_files_only=True)
+        except Exception:
+             print("Local model load failed, trying online...")
+             model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, dtype=DTYPE, trust_remote_code=True)
         # move to GPU if available
         if torch.cuda.is_available():
+            print("Moving model to CUDA...")
             model.to("cuda")
+            print("Model moved to CUDA.")
+        else:
+            print("CUDA not available, using CPU.")
+    print("Model loaded successfully.")
 except Exception as e:
     # Leave model as None and print a warning (not raising)
     print(f"Warning: failed to load model '{MODEL_NAME}': {e}")
@@ -107,12 +122,13 @@ def hf_llm(prompt: str) -> str:
     inputs = {k: v.to(device) for k, v in inputs.items()}
 
     # Generate output
+    streamer = TextStreamer(tokenizer, skip_prompt=True)
     with torch.no_grad():
         try:
-            output_ids = model.generate(**inputs, generation_config=gen_cfg, max_new_tokens=gen_cfg.max_new_tokens, do_sample=gen_cfg.do_sample, pad_token_id=tokenizer.eos_token_id)
+            output_ids = model.generate(**inputs, generation_config=gen_cfg, max_new_tokens=gen_cfg.max_new_tokens, do_sample=gen_cfg.do_sample, pad_token_id=tokenizer.eos_token_id, streamer=streamer)
         except TypeError:
             # Older transformers may not accept generation_config; pass directly
-            output_ids = model.generate(**inputs, max_new_tokens=gen_cfg.max_new_tokens, do_sample=gen_cfg.do_sample, pad_token_id=tokenizer.eos_token_id)
+            output_ids = model.generate(**inputs, max_new_tokens=gen_cfg.max_new_tokens, do_sample=gen_cfg.do_sample, pad_token_id=tokenizer.eos_token_id, streamer=streamer)
     # ====== TODO ======
 
 
