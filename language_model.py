@@ -91,7 +91,7 @@ def _postprocess_to_two_lines(text: str) -> str:
 
 
 # 2. We define the LLM function. This will be plugged into the agent without changing the controller ---
-def hf_llm(prompt: str) -> str:
+def hf_llm(prompt: str, streamer=None) -> str:
     """
     Completes from your existing ReAct prompt and returns exactly two lines:
     'Thought: ...' and 'Action: ...'
@@ -122,7 +122,9 @@ def hf_llm(prompt: str) -> str:
     inputs = {k: v.to(device) for k, v in inputs.items()}
 
     # Generate output
-    streamer = TextStreamer(tokenizer, skip_prompt=True)
+    if streamer is None:
+        streamer = TextStreamer(tokenizer, skip_prompt=True)
+    
     with torch.no_grad():
         try:
             output_ids = model.generate(**inputs, generation_config=gen_cfg, max_new_tokens=gen_cfg.max_new_tokens, do_sample=gen_cfg.do_sample, pad_token_id=tokenizer.eos_token_id, streamer=streamer)
