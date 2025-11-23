@@ -39,20 +39,45 @@ def main():
         st.caption("Powered by Qwen-2.5 & TF-IDF")
 
     # Main Header
-    st.title("ClariFi AI")
-    st.subheader("Your Intelligent Financial Analyst")
-    
     st.markdown("""
     <style>
+    .main-title {
+        font-size: 5rem !important;
+        font-weight: 800;
+        background: linear-gradient(to right, #1FA2FF, #12D8FA, #A6FFCB);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        padding-bottom: 10px;
+    }
+    .sub-header {
+        font-size: 1.5rem;
+        color: #555;
+        font-weight: 300;
+        margin-bottom: 30px;
+    }
     .stTextInput > label {
-        font-size: 1.1rem;
+        font-size: 1.2rem !important;
         font-weight: 600;
+        color: #1FA2FF;
     }
     .stButton > button {
         width: 100%;
+        background: linear-gradient(to right, #1FA2FF, #12D8FA);
+        color: white;
+        border: none;
+        font-weight: bold;
+        height: 3em;
+        transition: all 0.3s ease;
+    }
+    .stButton > button:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
     </style>
     """, unsafe_allow_html=True)
+
+    st.markdown('<h1 class="main-title">ClariFi AI</h1>', unsafe_allow_html=True)
+    st.markdown('<p class="sub-header">Your Intelligent Financial Analyst</p>', unsafe_allow_html=True)
 
     st.markdown("Ask questions about the financial documents in the knowledge base (e.g., Nestle 2024 Report, XYZ Inc.).")
 
