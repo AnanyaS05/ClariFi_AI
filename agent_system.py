@@ -13,6 +13,7 @@ from dataclasses import dataclass, field, asdict
 from typing import Callable, Dict, List, Tuple, Optional, Any
 import json, math, re, textwrap, random, os, sys
 import math
+import inspect
 from collections import Counter, defaultdict
 
 # import python files from the same folder, such as language_model.py, knowledge_base.py, prompting_techniques.py
@@ -54,6 +55,8 @@ class ReActAgent:
 
             # ====== TODO ======
             # 2. Use self.llm to process the prompt
+            if self.config.verbose:
+                print("Generating LLM response... (this may take a moment on CPU)")
             try:
                 out = self.llm(prompt)
             except Exception as e:
@@ -93,7 +96,12 @@ class ReActAgent:
 
             # 4. Execute the action
             try:
-                obs_payload = self.tools[name]["fn"](**args)
+                tool_fn = self.tools[name]["fn"]
+                # Filter args to match function signature
+                sig = inspect.signature(tool_fn)
+                valid_args = {k: v for k, v in args.items() if k in sig.parameters}
+                
+                obs_payload = tool_fn(**valid_args)
                 observation = json.dumps(obs_payload, ensure_ascii=False)  # show structured obs
             except Exception as e:
                 observation = f"Tool error: {e}"
@@ -103,7 +111,7 @@ class ReActAgent:
         # Build final answer from last finish action if present
         final_answer = None
         for s in reversed(self.trajectory):
-            if s.action.startswith("finish["):
+            if "finish[" in s.action:
                 m = re.search(r'answer="(.*)"', s.action)
                 if m:
                     final_answer = m.group(1)
