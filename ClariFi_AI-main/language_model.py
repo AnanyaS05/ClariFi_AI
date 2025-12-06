@@ -2,8 +2,8 @@
 import re, torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig, TextStreamer
 
-MODEL_NAME   = "Qwen/Qwen2.5-0.5B-Instruct"    # swap if you prefer another instruct model
-LOAD_8BIT    =  False                       # set True if you installed bitsandbytes and want 8-bit loading
+MODEL_NAME   = "Qwen/Qwen2.5-0.5B-Instruct"    
+LOAD_8BIT    =  False                       
 DTYPE        = torch.bfloat16 if torch.cuda.is_available() else torch.float32
 
 print(f"Loading tokenizer for {MODEL_NAME}...")
