@@ -69,9 +69,9 @@ The results demonstrated that the agent could reliably retrieve the correct fina
 
 Here are some examples of responses produced by the agent:
 
-![Result1](images\result1.png)
+![Result1](images/result1.png)
 
-![Result2](images\result2.png)
+![Result2](images/result2.png)
 ## Discussion
 
 The project results highlight both the strengths and limitations of a first-principles ReAct agent using a small local language model. On the positive side, the system was able to provide accurate answers grounded in real documents, demonstrating that retrieval-augmented agents can perform meaningful financial analysis even with lightweight models. The transparency of the ReAct format made debugging straightforward and allowed users to understand why each step occurred. However, several challenges emerged: the LLM occasionally broke the required action format, TF-IDF retrieval lacked deep semantic understanding, and CPU inference was slow. These results suggest that while the approach works well for educational and small-scale applications, scalability would require integrating embedding-based search, adding more robust parsing, and upgrading to larger models running on GPU hardware. Despite these limitations, the project successfully illustrates how agentic systems can support financial literacy and shows clear pathways for future extensions, such as multi-document reasoning, numerical computation tools, and more sophisticated retrieval pipelines.
