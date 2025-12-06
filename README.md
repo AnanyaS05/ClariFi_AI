@@ -67,6 +67,11 @@ To evaluate ClariFi AI’s capabilities, several experiments were conducted usin
 
 The results demonstrated that the agent could reliably retrieve the correct financial documents and generate coherent, grounded answers when responding to user queries. The ReAct reasoning loop allowed the model to articulate intermediate thoughts, select relevant tools, and synthesize the observations into structured final answers. In many cases, the agent successfully identified financial metrics such as revenue, profitability, and cash flow by referencing the appropriate documents. The Streamlit interface produced clear, readable outputs where the agent’s reasoning could be inspected step-by-step, confirming that the system correctly executed the intended algorithmic workflow. Overall, the system was effective at demonstrating agentic reasoning and retrieval-augmented generation within the constraints of a small local LLM.
 
+Here are some examples of responses produced by the agent:
+
+![Result1](images\result1.png)
+
+![Result2](images\result2.png)
 ## Discussion
 
 The project results highlight both the strengths and limitations of a first-principles ReAct agent using a small local language model. On the positive side, the system was able to provide accurate answers grounded in real documents, demonstrating that retrieval-augmented agents can perform meaningful financial analysis even with lightweight models. The transparency of the ReAct format made debugging straightforward and allowed users to understand why each step occurred. However, several challenges emerged: the LLM occasionally broke the required action format, TF-IDF retrieval lacked deep semantic understanding, and CPU inference was slow. These results suggest that while the approach works well for educational and small-scale applications, scalability would require integrating embedding-based search, adding more robust parsing, and upgrading to larger models running on GPU hardware. Despite these limitations, the project successfully illustrates how agentic systems can support financial literacy and shows clear pathways for future extensions, such as multi-document reasoning, numerical computation tools, and more sophisticated retrieval pipelines.
@@ -77,13 +82,30 @@ ClariFi AI demonstrates a complete implementation of a ReAct-based financial ana
 
 ## Prerequisites
 
-*   **Python**: 3.8 or higher.
-@@ -113,6 +157,10 @@ LOAD_8BIT = True  # Set to True if you have bitsandbytes and a GPU
-*   **Slow Generation**: On a CPU, generating text is slow. The streaming feature is enabled in both UI and CLI so you can see progress character-by-character.
-*   **`torch_dtype` Warning**: This has been fixed in the latest codebase by using the `dtype` argument.
+To run ClariFi AI, you need the following installed:
+
+*   **Python**: 3.8 or higher
+*   **Streamlit**: For the web interface
+*   **Transformers**: For loading the LLM
+*   **PyTorch**: Deep learning framework
+*   **NumPy & SciPy**: For numerical operations and TF-IDF calculations
+
+You can install all dependencies using the provided `requirements.txt` file:
+
+```bash
+pip install -r requirements.txt
+```
+
+**Note on Hardware**:
+*   **CPU**: The model will run on CPU, but inference may be slow.
+*   **GPU**: If available, the system will automatically utilize CUDA for faster performance.
+
 
 ## References
 
+*   **Course Starter Code**: This project utilizes the starter code and framework provided by the professor for the CS 4100 course.
+*   **ReAct: Synergizing Reasoning and Acting in Language Models**: Yao et al., 2022. (https://arxiv.org/abs/2210.03629)
+*   **Qwen2.5 Technical Report**: Alibaba Cloud, 2024. (https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct)
 
 
 ## License
